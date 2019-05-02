@@ -5,6 +5,7 @@
  */
 package knn;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -23,50 +24,58 @@ public class KNN {
         int qtde_acrt = 0;
         double distancias[];
         Random random = new Random();
-        int p1 = random.nextInt(150);
-        int p2 = random.nextInt(150);
-        int p3 = random.nextInt(150);
-        double possivel1[] = iris[p1];
-        double possivel2[] = iris[p2];
-        double possivel3[] = iris[p3];
-        double mPossivel1[] = null;
-        double mPossivel2[] = null;
-        double mPossivel3[] = null;
-        double dPossivel1 = (p1 != 0) ? distanciaAB(possivel1, iris[0]): distanciaAB(possivel1, iris[1]);
-        double dPossivel2 = (p1 != 0) ? distanciaAB(possivel2, iris[0]): distanciaAB(possivel2, iris[1]);
-        double dPossivel3 = (p1 != 0) ? distanciaAB(possivel3, iris[0]): distanciaAB(possivel3, iris[1]);
-        for(int i = 0; i < 150; i++) {
-            if(p1 != i){
-                if(dPossivel1 >= distanciaAB(possivel1, iris[i])){
-                    dPossivel1 = distanciaAB(possivel1, iris[i]);
-                    mPossivel1 = iris[i];
-                }
-            }
-            if(p2 != i){
-                if(dPossivel2 >= distanciaAB(possivel2, iris[i])){
-                    dPossivel2 = distanciaAB(possivel2, iris[i]);
-                    mPossivel2 = iris[i];
-                }
-            }
-            if(p3 != i){
-                if(dPossivel3 >= distanciaAB(possivel3, iris[i])){
-                    dPossivel3 = distanciaAB(possivel3, iris[i]);
-                    mPossivel3 = iris[i];
-                }
-            }
+        double[][] ind_treina;
+        for (int i = 0; i < qtde_teste; i++) {
+            ind_treina = iris;
         }
-        System.out.println("P1: " + p1);
-        System.out.println("Possi1 1: " + possivel1[0]);
-        System.out.println("M possi1 1: " + mPossivel1[0]);
-        System.out.println("D Possil 1: " + dPossivel1);
-        System.out.println("P2: " + p2);
-        System.out.println("Possi1 2: " + possivel2[0]);
-        System.out.println("M possi1 2: " + mPossivel2[0]);
-        System.out.println("D Possil 2: " + dPossivel2);
-        System.out.println("P3: " + p1);
-        System.out.println("Possi1 3: " + possivel3[0]);
-        System.out.println("M possi1 3: " + mPossivel3[0]);
-        System.out.println("D Possil 3: " + dPossivel3);
+        double[] ind_teste;
+        for(int i = 0; i < (150 - qtde_teste); i++){
+            
+        }
+//        int p1 = random.nextInt(150);
+//        int p2 = random.nextInt(150);
+//        int p3 = random.nextInt(150);
+//        double possivel1[] = iris[p1];
+//        double possivel2[] = iris[p2];
+//        double possivel3[] = iris[p3];
+//        double mPossivel1[] = null;
+//        double mPossivel2[] = null;
+//        double mPossivel3[] = null;
+//        double dPossivel1 = (p1 != 0) ? distanciaAB(possivel1, iris[0]): distanciaAB(possivel1, iris[1]);
+//        double dPossivel2 = (p1 != 0) ? distanciaAB(possivel2, iris[0]): distanciaAB(possivel2, iris[1]);
+//        double dPossivel3 = (p1 != 0) ? distanciaAB(possivel3, iris[0]): distanciaAB(possivel3, iris[1]);
+//        for(int i = 0; i < 150; i++) {
+//            if(p1 != i){
+//                if(dPossivel1 >= distanciaAB(possivel1, iris[i])){
+//                    dPossivel1 = distanciaAB(possivel1, iris[i]);
+//                    mPossivel1 = iris[i];
+//                }
+//            }
+//            if(p2 != i){
+//                if(dPossivel2 >= distanciaAB(possivel2, iris[i])){
+//                    dPossivel2 = distanciaAB(possivel2, iris[i]);
+//                    mPossivel2 = iris[i];
+//                }
+//            }
+//            if(p3 != i){
+//                if(dPossivel3 >= distanciaAB(possivel3, iris[i])){
+//                    dPossivel3 = distanciaAB(possivel3, iris[i]);
+//                    mPossivel3 = iris[i];
+//                }
+//            }
+//        }
+//        System.out.println("P1: " + p1);
+//        System.out.println("Possi1 1: " + possivel1[0]);
+//        System.out.println("M possi1 1: " + mPossivel1[0]);
+//        System.out.println("D Possil 1: " + dPossivel1);
+//        System.out.println("P2: " + p2);
+//        System.out.println("Possi1 2: " + possivel2[0]);
+//        System.out.println("M possi1 2: " + mPossivel2[0]);
+//        System.out.println("D Possil 2: " + dPossivel2);
+//        System.out.println("P3: " + p1);
+//        System.out.println("Possi1 3: " + possivel3[0]);
+//        System.out.println("M possi1 3: " + mPossivel3[0]);
+//        System.out.println("D Possil 3: " + dPossivel3);
     }
     private static double distanciaAB(double[] a, double[] b){
         double result = 0;
@@ -75,6 +84,39 @@ public class KNN {
         }
         result = Math.sqrt(result);
         return result;
+    }
+    public static int classificarAmostra(double[][] a, double[] b){
+        int tam = a.length;
+        double dist;
+        double dist_ind[] = null;
+        for (int i = 0; i < tam; i++) {
+            dist = distanciaAB(a[i], b);
+            dist_ind[i] = dist;
+        }
+        Integer[] cont_class = new Integer[3];
+        Arrays.fill(cont_class, 0);
+        for (int i = 0; i < dist_ind.length; i++) {
+            switch ((int) a[i][4]) {
+                case 1:
+                    cont_class[0]++;
+                    break;
+                case 2:
+                    cont_class[1]++;
+                    break;
+                default:
+                    cont_class[2]++;
+                    break;
+            }
+        }
+        int classificacao;
+        if(cont_class[0] >= cont_class[1] && cont_class[0] >= cont_class[2]){
+            classificacao = 1;
+        } else if(cont_class[1] >= cont_class[0] && cont_class[1] >= cont_class[2]){
+            classificacao = 2;
+        } else{
+            classificacao = 3;
+        }
+        return classificacao;
     }
     private static void shuffleArray(String[][] array) {
         String temp[];
