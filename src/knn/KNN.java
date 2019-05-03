@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -26,6 +29,12 @@ public class KNN {
         int teste_classe[];
         int qtde_acrt = 0;
         ArrayList<Integer> qtde_acrt_classe = new ArrayList<>();
+        ArrayList<Double> erroPorTreinoAL = new ArrayList<>();
+        ArrayList<Double> mediaErroPorTreinoAL = new ArrayList<>();
+        ArrayList<Double> acrtPorTreinoAL = new ArrayList<>();
+        XYSeries mediaAcrtPorTreino = new XYSeries("Média de acertos pela porcentagem de treinamento.");
+        XYSeries mediaErroPorTreino = new XYSeries("Média de erros pela porcentagem de treinamento.");
+        XYSeries erroPorTreino = new XYSeries("Quantidade de erros em função da quantidade treinamento.");
         int acrt = 0;
         double distancias[];
         Double[][] ind_treina;
@@ -35,7 +44,7 @@ public class KNN {
         int k = 0;
         double classe_obtida;
         
-        for (int n = 0; n < 3; n++) {
+        for (int n = 0; n < 5; n++) {
             while (qtde_treino < 150) {
                 ind_treina = new Double[qtde_treino][4];
                 for (int i = 0; i < qtde_treino; i++) {
@@ -54,6 +63,12 @@ public class KNN {
                 shuffleArray(iris);
                 System.out.println("Total de acertos: " + acrt +  " de " + (qtde_teste ));
                 qtde_acrt += acrt;
+//                mediaAcrtPorTreinoAL.add((double) acrt);
+                erroPorTreinoAL.add((double) (150 - acrt));
+//                mediaAcrtPorTreino.add(qtde_teste, mediaAcrtPorTreinoAL.get(k));
+                erroPorTreino.add(qtde_teste, erroPorTreinoAL.get(k));
+                mediaErroPorTreinoAL.add((double) (150 - acrt) / qtde_treino);                
+                mediaErroPorTreino.add(qtde_teste, mediaErroPorTreinoAL.get(k++));
                 acrt = 0;
                 qtde_treino += 15;
                 qtde_teste = 150 - qtde_treino;
@@ -62,7 +77,20 @@ public class KNN {
             qtde_teste = 150 - qtde_treino;
             qtde_acrt_classe.add(qtde_acrt);
             qtde_acrt = 0;
+            k = 0;
         }
+        System.out.println("Acrt: " + qtde_acrt);
+        System.out.println("Classe: " + qtde_acrt_classe.get(0) + " tam: " + qtde_acrt_classe.size());
+        
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        
+//        dataset.addSeries(mediaAcrtPorTreino);
+//        dataset.addSeries(mediaErroPorTreino);
+        dataset.addSeries(erroPorTreino);
+        LineChart_AWT chart = new LineChart_AWT("Gráfico", "", dataset);
+        chart.pack( );          
+        RefineryUtilities.centerFrameOnScreen( chart );          
+        chart.setVisible( true );
     }
     private static double distanciaAB(Double[] a, Double[] b){
         double result = 0;
